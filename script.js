@@ -1,4 +1,4 @@
-const GROQ_API_KEY = "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"; // ← Paste your Groq key here
+const GROQ_API_KEY = "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";
 
 const messagesDiv = document.getElementById("messages");
 const userInput = document.getElementById("user-input");
@@ -26,7 +26,7 @@ async function getAIResponse(userMessage) {
                 "Authorization": `Bearer ${GROQ_API_KEY}`
             },
             body: JSON.stringify({
-                model: "llama-3.3-70b-versatile",   // Good balance for free tier
+                model: "llama-3.3-70b-versatile",
                 messages: [
                     { role: "system", content: SYSTEM_PROMPT },
                     { role: "user", content: userMessage }
@@ -39,15 +39,15 @@ async function getAIResponse(userMessage) {
         const data = await response.json();
 
         if (!response.ok) {
-            console.error("Groq Error:", data);
-            return "Uxolo mngane! Kukhona inkinga encane. Zama futhi noma ulinde kancane. 🌟";
+            console.error("Groq API Error:", data);
+            return "ERROR: " + (data.error?.message || "Unknown error") + "\n\nSicela ubheke i-Console (F12).";
         }
 
         return data.choices[0].message.content;
 
     } catch (error) {
-        console.error("Error:", error);
-        return "Ayikwazi ukuxhumana manje. Hlola inethiwekhi yakho bese uyazama futhi! 🦒";
+        console.error("Network Error:", error);
+        return "Ayikwazi ukuxhumana ne-Groq. Hlola inethiwekhi noma i-API key.";
     }
 }
 
@@ -71,7 +71,6 @@ async function sendMessage() {
 sendBtn.addEventListener("click", sendMessage);
 userInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
 
-// Welcome message
 window.onload = () => {
-    addMessage("Sawubona mngane wami! 🎉 Ngingu uMngane Wami. Ungathanda ukukhuluma ngani namuhla?", false);
+    addMessage("Sawubona mngane wami! 🎉 Ngingu uMngane Wami. Ungathanda ukukhuluma ngani?", false);
 };
